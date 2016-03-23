@@ -7,7 +7,7 @@ local is_run = true
 --
 local update_id = 0
 
---В файле должны быть инициализированы переменные token и from_id
+--В файле telegram_settings.lua должны быть инициализированы переменные token и from_id
 require ("telegram_settings")
 
 -- Инициализируем бота
@@ -36,6 +36,8 @@ function OnStop()
 end
 
 function OnOrder(order)
+
+	if orders_info ~= true then return end -- молчим о заявках, если нужно
 
     local sec_code = order.sec_code
 
@@ -75,6 +77,8 @@ function OnOrder(order)
 end
 
 function OnTrade(trade_data)
+
+	if trades_info ~= true then return end -- молчим о сделках, если нужно 
 
 	if check_trade(trade_data.trade_num) == 0 then
 
