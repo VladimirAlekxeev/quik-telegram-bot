@@ -39,36 +39,26 @@ function OnOrder(order)
 
 	if orders_info ~= true then return end -- молчим о заявках, если нужно
 
-    local sec_code = order.sec_code
-
 	if check_order (order.order_num) == 0 then
 
 		if bit.band(order.flags,1)>0 then
 
 		 	if bit.band(order.flags,4)>0 then
-				sell_order=order.order_num
-				sell_price=tonumber(order.price)
-				sell_count=tonumber(order.balance)
-				bot.sendMessage(from_id, "ORDER_SELL #"..sell_order.." "..sec_code.." P="..sell_price.." Q="..sell_count)
+				order_direction = "ORDER_SELL"
 		 	else
-				buy_order=order.order_num
-				buy_price=tonumber(order.price)
-				buy_count=tonumber(order.balance)
-				bot.sendMessage(from_id, "ORDER_BUY #"..buy_order.." "..sec_code.." P="..buy_price.." Q="..buy_count)
+				order_direction = "ORDER_BUY"
 		 	end
+
+			bot.sendMessage(from_id, order_direction.." "..order.sec_code.." P="..order.price.." Q="..order.balance.." #"..order.order_num)
 
 		else
 			--если заявка не активна
 			if bit.band(order["flags"],1)>0 then
 
 				if bit.band(order["flags"],8)>0 then
---                             sell_order=""
---                             sell_price=0
---                             sell_count=0
+					return
 				else
---                             buy_order=""
---                             buy_price=0
---                             buy_count=0
+					return
 				end
 
 			end
@@ -78,7 +68,7 @@ end
 
 function OnTrade(trade_data)
 
-	if trades_info ~= true then return end -- молчим о сделках, если нужно 
+	if trades_info ~= true then return end -- молчим о сделках, если нужно
 
 	if check_trade(trade_data.trade_num) == 0 then
 
@@ -162,7 +152,7 @@ function telegram_get(update_id)
 			    	bot.sendMessage(query.message.from.id, "USD BID >> "..tostring(getParamEx("CETS","USD000UTSTOM","BID").param_value).." >> "..status)
 
 --				elseif query.message.text == "Fut" then
---					
+--
 --					Fut = getFuturesLimit("SPBFUT", "410097К", 0).varmargin
 --			     	bot.sendMessage(query.message.from.id, tostring(Fut).." fut USD BID >> "..tostring(getParamEx("CETS","USD000UTSTOM","BID").param_value))
 
