@@ -75,12 +75,12 @@ function OnTrade(trade_data)
 		local trade_dir
 
 		if bit.band(trade_data.flags,4) > 0 then
-			trade_dir = "TRADE_SELL #"
+			trade_dir = "TRADE_SELL"
 		else
-			trade_dir = "TRADE_BUY #"
+			trade_dir = "TRADE_BUY"
 		end
 
-		bot.sendMessage(from_id, trade_dir..trade_data.trade_num.." "..trade_data.sec_code.." P="..trade_data.price.." Q="..trade_data.qty)
+		bot.sendMessage(from_id, trade_dir.." "..trade_data.sec_code.." P="..trade_data.price.." Q="..trade_data.qty.." #"..trade_data.trade_num)
 
 	end
 end
